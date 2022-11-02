@@ -1,20 +1,46 @@
 nums =  [2,3,1,1,4]
-def can_jump_memoization(i, array, cache):
 
-    if i >= len(array):
+def jump(nums,pos):
+
+    if pos > len(nums)-1:
         return False
-    elif i == len(array)-1:
+    
+    elif pos == len(nums)-1:
         return True
-    elif i in cache:
-        return cache[i]
-    else:
-        cache[i] = False
-        for j in range(1, array[i]+1):
-            if can_jump_memoization(j+i, array, cache):
-                cache[i] = True
-                return True
-        return cache[i]
-print(can_jump_memoization(0,nums,{}))
+
+    for i in range(pos+1,(pos+nums[i]+1):
+        if jump(nums,pos):
+            return True
+    return False
+jump(nums,0)
+
+
+
+
+
+
+
+
+
+
+
+
+# def can_jump_memoization(i, array, cache):
+
+#     if i >= len(array):
+#         return False
+#     elif i == len(array)-1:
+#         return True
+#     elif i in cache:
+#         return cache[i]
+#     else:
+#         cache[i] = False
+#         for j in range(1, array[i]+1):
+#             if can_jump_memoization(j+i, array, cache):
+#                 cache[i] = True
+#                 return True
+#         return cache[i]
+# print(can_jump_memoization(0,nums,{}))
 
 # def canJump(nums):
 #     N = len(nums)
