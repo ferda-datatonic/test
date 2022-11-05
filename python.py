@@ -1,18 +1,27 @@
-n = 3
-matrix = [[0]*n for _ in range(n)]
+def simplifyPath(self, path: str) -> str:
+    if path[-1] == "/":
+        path = path[:-1]
+    if path[0]!="/":
+        path = "/"+path 
+    indices = []
 
-def dfs(matrix,i,j,count):
-    if (i >= len(matrix)) or (i<0) or (j>=len(matrix[0])) or (j<0) or matrix[i][j] != 0:
-        return
-
-    matrix[i][j] = count
-    count +=1
-    #in any case, we DO NOT want to go right
-    #until j+1 is within i
-    if j+1>=i:
-        dfs(matrix,i,j+1,count)
-    dfs(matrix,i+1,j,count)
-    dfs(matrix,i,j-1,count)
-    dfs(matrix,i-1,j,count)
-dfs(matrix,i=0,j=0,count=1)
-print(matrix)
+    for i in range(len(path)):
+        if path[i] == "/":
+            indices.append(i)
+    path = list(path)
+    for i in range(len(indices[::-1])):
+        if i == len(indices)-1:
+            pass
+        else:
+            if abs(indices[i]-indices[i+1])==1:
+                path.pop(indices[i])
+    stack = []
+    while path != []:
+        curr = path.pop(0)
+        if stack == []:
+            stack.append(curr)
+        elif curr != "." and curr !="_":
+            stack.append(curr)
+        else:
+            continue
+    return "".join(stack)
