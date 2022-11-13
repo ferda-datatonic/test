@@ -1,34 +1,26 @@
-class WordsAlphabet:
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+class Solution:
+    def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+        def dfs(nums):
+            if not nums:
+                return [None]
 
-    def __init__(self, alphabet, fruit, country):
-        self.alphabet = alphabet
-        self.fruit = fruit
-        self.country = country
+            ans = []
 
-    def __str__(self):
-        return "WordsAlphabet(alphabet:'%s', fruit='%s', country='%s')" % (self.alphabet, self.fruit, self.country)
+            for i in range(len(nums)):
+                leftTrees = dfs(nums[:i])
+                rightTrees = dfs(nums[i+1:])
 
-def apply_transforms(fruits, countries):
-    def map_to_alphabet_kv(word):
-        return (word[0], word)
-
-    def cogbk_result_to_wordsalphabet(cgbk_result):
-        (alphabet, words) = cgbk_result
-        return WordsAlphabet(alphabet, words['fruits'][0], words['countries'][0])
-
-    fruits_kv = (fruits | 'Fruit to KV' >> beam.Map(map_to_alphabet_kv))
-    countries_kv = (countries | 'Country to KV' >> beam.Map(map_to_alphabet_kv))
-
-    return ({'fruits': fruits_kv, 'countries': countries_kv}
-            | beam.CoGroupByKey()
-            | beam.Map(cogbk_result_to_wordsalphabet))
-
-
-
-with beam.Pipeline() as p:
-
-  fruits = p | 'Fruits' >> beam.Create(['apple', 'banana', 'cherry'])
-  countries = p | 'Countries' >> beam.Create(['australia', 'brazil', 'canada'])
-
-  (apply_transforms(fruits, countries)
-   | LogElements())
+                for l in leftTrees:
+                    for r in rightTrees:
+                        root = TreeNode(nums[i])
+                        root.left = l
+                        root.right = r
+                        ans.append(root)
+            return ans
+        nums = [x for x in range(1,n+1)]
+        return dfs(nums)
